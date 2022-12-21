@@ -11,6 +11,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import ru.testwork.bincheckerapp.presentation.screens.main.MainLayout
 import ru.testwork.bincheckerapp.presentation.theme.BinCheckerAppTheme
 
+const val TAG = "MyLog"
+
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
