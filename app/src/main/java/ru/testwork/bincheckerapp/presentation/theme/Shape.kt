@@ -1,4 +1,4 @@
-package ru.testwork.bincheckerapp.ui.theme
+package ru.testwork.bincheckerapp.presentation.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes

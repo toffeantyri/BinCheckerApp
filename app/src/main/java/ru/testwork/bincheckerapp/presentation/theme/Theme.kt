@@ -1,4 +1,4 @@
-package ru.testwork.bincheckerapp.ui.theme
+package ru.testwork.bincheckerapp.presentation.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
