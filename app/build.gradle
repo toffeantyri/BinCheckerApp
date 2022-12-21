@@ -67,6 +67,7 @@ dependencies {
     implementation 'androidx.activity:activity-compose:1.6.1'
     implementation "androidx.navigation:navigation-compose:$navigation_version"
     implementation "androidx.constraintlayout:constraintlayout-compose:$constraintlayout_version"
+    debugImplementation "androidx.compose.ui:ui-tooling:$compose_ui_version"
 
     //DI hilt
     implementation "com.google.dagger:hilt-android:$dagger_hilt_android_version"
