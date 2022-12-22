@@ -10,6 +10,7 @@ buildscript {
         room_version = '2.5.0-alpha03'
         retrofit_version = '2.9.0'
         login_interceptor_version = '4.10.0'
+        moshi_version = '1.14.0'
     }
 }// Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {

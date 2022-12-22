@@ -4,7 +4,7 @@ import android.util.Log
 import ru.testwork.bincheckerapp.TAG
 import ru.testwork.bincheckerapp.data.datasources.BinCodeLocalDataSource
 import ru.testwork.bincheckerapp.data.datasources.BinCodeRemoteDataSource
-import ru.testwork.bincheckerapp.data.models.BinInfoModel
+import ru.testwork.bincheckerapp.data.models.remote.BinInfoModel
 import javax.inject.Inject
 
 class BinCodeInfoRepositoryImpl @Inject constructor(

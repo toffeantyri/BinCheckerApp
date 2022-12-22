@@ -37,9 +37,9 @@ class HomeViewModel @Inject constructor(private val binCodeInteractor: IBinCodeI
                     Log.d(TAG, "VM: $text")
                     binCodeInteractor.getBinCodeInfo(text.toInt())
                 }.onSuccess {
-
+                    Log.d(TAG, "VM success: $it")
                 }.onFailure {
-
+                    Log.d(TAG, "VM error: $it")
                 }
             } else {
                 binCodeIsValid.tryEmit(false)

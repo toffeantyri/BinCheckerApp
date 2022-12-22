@@ -2,7 +2,7 @@ package ru.testwork.bincheckerapp.domain
 
 import android.util.Log
 import ru.testwork.bincheckerapp.TAG
-import ru.testwork.bincheckerapp.data.models.BinInfoModel
+import ru.testwork.bincheckerapp.data.models.remote.BinInfoModel
 import ru.testwork.bincheckerapp.data.repositories.BinCodeInfoRepository
 import javax.inject.Inject
 

@@ -1,6 +1,6 @@
 package ru.testwork.bincheckerapp.domain
 
-import ru.testwork.bincheckerapp.data.models.BinInfoModel
+import ru.testwork.bincheckerapp.data.models.remote.BinInfoModel
 
 interface IBinCodeInfoInteractor {
 

@@ -2,7 +2,7 @@
     <string name="app_name">BinCheckerApp</string>
 
     <string name="title_input_your_bin">Введите ваш BIN код</string>
-    <string name="bin_code_description">BIN код это первые 8 цифр вашей карты</string>
+    <string name="bin_code_description">BIN код это первые 6–8 цифр вашей карты</string>
     <string name="bank">BANK</string>
     <string name="person_name">PERSON NAME</string>
 

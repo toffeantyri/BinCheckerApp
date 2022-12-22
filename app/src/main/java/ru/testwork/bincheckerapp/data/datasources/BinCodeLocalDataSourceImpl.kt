@@ -1,6 +1,6 @@
 package ru.testwork.bincheckerapp.data.datasources
 
-import ru.testwork.bincheckerapp.data.models.BinInfoModel
+import ru.testwork.bincheckerapp.data.models.remote.BinInfoModel
 
 class BinCodeLocalDataSourceImpl : BinCodeLocalDataSource {
 
