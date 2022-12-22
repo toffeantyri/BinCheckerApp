@@ -7,11 +7,13 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import ru.testwork.bincheckerapp.TAG
+import ru.testwork.bincheckerapp.domain.IBinCodeInfoInteractor
 import javax.inject.Inject
 
 
 @HiltViewModel
-class HomeViewModel @Inject constructor() : ViewModel() {
+class HomeViewModel @Inject constructor(private val binCodeInteractor: IBinCodeInfoInteractor) :
+    ViewModel() {
 
     private val inputPattern = Regex("^\\d{6,8}\$")
 
@@ -32,7 +34,8 @@ class HomeViewModel @Inject constructor() : ViewModel() {
         viewModelScope.launch {
             if (validateBinCode(text)) {
                 kotlin.runCatching {
-                    Log.d(TAG, "-----------------getBinCodeInfo: ")
+                    Log.d(TAG, "VM: $text")
+                    binCodeInteractor.getBinCodeInfo(text.toInt())
                 }.onSuccess {
 
                 }.onFailure {
