@@ -3,6 +3,7 @@ package ru.testwork.bincheckerapp.presentation.screens.home
 import android.app.Activity
 import android.os.Handler
 import android.os.Looper
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -37,6 +38,8 @@ fun HomeView(viewModel: HomeViewModel = hiltViewModel()) {
     val binCodeIsValidate by viewModel.binCodeIsValid.collectAsState()
 
     val isLoading by viewModel.isLoadingState.collectAsState()
+
+    val binData by viewModel.binDtoFlow.collectAsState()
 
     val inputPattern = remember { Regex("^\\d{0,8}\$") }
 
@@ -116,7 +119,12 @@ fun HomeView(viewModel: HomeViewModel = hiltViewModel()) {
             )
         }
 
+        AnimatedVisibility(visible = binData != null) {
+            binData?.let { binData ->
+                BinInfoCard(binInfoModel = binData)
+            }
 
+        }
     }
 }
 

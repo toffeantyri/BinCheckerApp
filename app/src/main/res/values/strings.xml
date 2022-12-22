@@ -9,5 +9,12 @@
     <string name="double_back_for_exit">Нажмите назад еще раз что бы выйти из приложения</string>
     <string name="button_check">Check BIN</string>
 
+    <string name="scheme_network">SCHEME / NETWORK</string>
+    <string name="TYPE">TYPE</string>
+    <string name="BRAND">BRAND</string>
+    <string name="PREPAID">PREPAID</string>
+    <string name="yes">yes</string>
+    <string name="no">no</string>
+
 
 </resources>
