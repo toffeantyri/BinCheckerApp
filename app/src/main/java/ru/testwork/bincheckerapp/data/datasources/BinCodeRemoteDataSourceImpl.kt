@@ -11,7 +11,9 @@ class BinCodeRemoteDataSourceImpl @Inject constructor(private val api: ApiServic
 
     override suspend fun getBinCodeInfo(code: Int): BinInfoModel {
         Log.d(TAG, "REMOTE: $code ")
-        val result = api.getBinInfoByCode(code)
+        val result = api.getBinInfoByCode(code).apply {
+            binCode = code
+        }
         Log.d(TAG, "REMOTE: $result ")
         return result
     }
