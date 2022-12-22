@@ -19,6 +19,8 @@ class HomeViewModel @Inject constructor(private val binCodeInteractor: IBinCodeI
 
     val binCodeIsValid = MutableStateFlow(value = true)
 
+    val isLoadingState = MutableStateFlow(value = false)
+
     fun validateBinCode(text: String): Boolean {
         return if (text.matches(inputPattern)) {
             binCodeIsValid.tryEmit(true)
@@ -35,10 +37,13 @@ class HomeViewModel @Inject constructor(private val binCodeInteractor: IBinCodeI
             if (validateBinCode(text)) {
                 kotlin.runCatching {
                     Log.d(TAG, "VM: $text")
+                    isLoadingState.tryEmit(true)
                     binCodeInteractor.getBinCodeInfo(text.toInt())
                 }.onSuccess {
+                    isLoadingState.tryEmit(false)
                     Log.d(TAG, "VM success: $it")
                 }.onFailure {
+                    isLoadingState.tryEmit(false)
                     Log.d(TAG, "VM error: $it")
                 }
             } else {

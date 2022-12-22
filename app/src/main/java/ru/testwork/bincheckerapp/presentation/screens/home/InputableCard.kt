@@ -22,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ru.testwork.bincheckerapp.R
@@ -33,7 +34,8 @@ fun InputableCard(
     inputText: String,
     binCodeIsValid: Boolean,
     onValueChanged: (text: String) -> Unit,
-    onInputSearchBarCode: (text: String) -> Unit
+    onInputSearchBarCode: (text: String) -> Unit,
+    isLoading: Boolean
 ) {
 
     val borderColor by remember {
@@ -41,6 +43,10 @@ fun InputableCard(
             if (binCodeIsValid) Pair(Color.DarkGray, Color.Blue)
             else Pair(Color.Red, Color.Red)
         )
+    }
+
+    val inputBackgroundColor by remember {
+        mutableStateOf(if (isLoading) Color.Gray else Color.White)
     }
 
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -114,17 +120,17 @@ fun InputableCard(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .fillMaxHeight()
+                    .wrapContentHeight()
                     .padding(horizontal = 10.dp)
                     .padding(vertical = 25.dp)
             ) {
                 OutlinedTextField(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 8.dp)
                         .weight(1f)
                         .padding(horizontal = 4.dp),
                     value = inputText,
+                    readOnly = isLoading,
                     onValueChange = {
                         onValueChanged(it)
                     }, maxLines = 1,
@@ -141,7 +147,7 @@ fun InputableCard(
                     isError = !binCodeIsValid,
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         textColor = Color.Black,
-                        backgroundColor = Color.White,
+                        backgroundColor = inputBackgroundColor,
                         unfocusedBorderColor = borderColor.first,
                         focusedBorderColor = borderColor.second
                     )
@@ -151,7 +157,6 @@ fun InputableCard(
                 OutlinedTextField(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 8.dp)
                         .weight(0.5f)
                         .padding(horizontal = 4.dp),
                     value = "XXXX",
@@ -164,7 +169,6 @@ fun InputableCard(
                 OutlinedTextField(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 8.dp)
                         .weight(0.5f)
                         .padding(horizontal = 4.dp),
                     value = "XXXX",
@@ -206,5 +210,17 @@ fun InputableCard(
             }
         }
     }
+}
 
+@Preview(showBackground = true)
+@Composable
+fun PreviewInputableCard() {
+
+    InputableCard(
+        inputText = "12345678",
+        binCodeIsValid = true,
+        onValueChanged = {},
+        onInputSearchBarCode = {},
+        isLoading = true
+    )
 }

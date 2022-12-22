@@ -4,11 +4,10 @@ import android.app.Activity
 import android.os.Handler
 import android.os.Looper
 import androidx.compose.foundation.ScrollState
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -31,26 +30,13 @@ fun HomeView(viewModel: HomeViewModel = hiltViewModel()) {
         mutableStateOf(false)
     }
 
-    val context = LocalContext.current as Activity
-
-
-    val message = stringResource(id = R.string.double_back_for_exit)
-    OnBackPressedCallBackCompose() {
-        if (backPressDoubleClick.value) {
-            context.finish()
-        } else {
-            context.showToast(message)
-        }
-        backPressDoubleClick.value = true
-        val handler = Looper.myLooper()?.let { Handler(it) }
-        handler?.postDelayed({ backPressDoubleClick.value = false }, 2000)
-    }
-
     var inputBinCode by remember {
         mutableStateOf("45717360")
     }
 
     val binCodeIsValidate by viewModel.binCodeIsValid.collectAsState()
+
+    val isLoading by viewModel.isLoadingState.collectAsState()
 
     val inputPattern = remember { Regex("^\\d{0,8}\$") }
 
@@ -68,7 +54,19 @@ fun HomeView(viewModel: HomeViewModel = hiltViewModel()) {
     val onSearchBinCodeClick = viewModel::getBinCodeInfo
 
 
+    val context = LocalContext.current as Activity
 
+    val message = stringResource(id = R.string.double_back_for_exit)
+    OnBackPressedCallBackCompose() {
+        if (backPressDoubleClick.value) {
+            context.finish()
+        } else {
+            context.showToast(message)
+        }
+        backPressDoubleClick.value = true
+        val handler = Looper.myLooper()?.let { Handler(it) }
+        handler?.postDelayed({ backPressDoubleClick.value = false }, 2000)
+    }
 
     Column(
         modifier = Modifier
@@ -100,8 +98,23 @@ fun HomeView(viewModel: HomeViewModel = hiltViewModel()) {
             inputText = inputBinCode,
             binCodeIsValid = binCodeIsValidate,
             onValueChanged = onValueChanged,
-            onInputSearchBarCode = onSearchBinCodeClick
+            onInputSearchBarCode = onSearchBinCodeClick,
+            isLoading = isLoading
         )
+
+        Button(modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .padding(vertical = 4.dp),
+            enabled = !isLoading,
+            shape = RoundedCornerShape(8.dp),
+            onClick = { onSearchBinCodeClick(inputBinCode) }) {
+            Text(
+                modifier = Modifier.padding(4.dp),
+                text = stringResource(id = R.string.button_check),
+                maxLines = 1
+            )
+        }
 
 
     }
