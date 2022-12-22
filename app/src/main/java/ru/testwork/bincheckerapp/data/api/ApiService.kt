@@ -6,7 +6,7 @@ import ru.testwork.bincheckerapp.data.models.remote.BinInfoModel
 
 interface ApiService {
 
-    @GET("/{code}/")
-    fun getBinInfoByCode(@Path("code") code: Int): BinInfoModel
+    @GET("/{code}")
+    suspend fun getBinInfoByCode(@Path("code") code: Int): BinInfoModel
 
 }

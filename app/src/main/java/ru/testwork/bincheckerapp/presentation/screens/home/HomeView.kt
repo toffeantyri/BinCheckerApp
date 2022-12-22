@@ -22,7 +22,7 @@ import ru.testwork.bincheckerapp.R
 fun HomeView(viewModel: HomeViewModel = hiltViewModel()) {
 
     var inputBinCode by remember {
-        mutableStateOf("12345678")
+        mutableStateOf("45717360")
     }
 
     val binCodeIsValidate by viewModel.binCodeIsValid.collectAsState()

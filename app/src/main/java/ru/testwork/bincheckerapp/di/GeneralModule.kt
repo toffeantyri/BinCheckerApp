@@ -1,11 +1,13 @@
 package ru.testwork.bincheckerapp.di
 
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import ru.testwork.bincheckerapp.data.api.ApiService
@@ -73,7 +75,7 @@ object GeneralModule {
     @InstallIn(SingletonComponent::class)
     object NetworkModule {
 
-        private const val BIN_INFO_BASE_URL = "https://binlist.net/"
+        private const val BIN_INFO_BASE_URL = "https://lookup.binlist.net"
 
         @Provides
         @Singleton
@@ -93,14 +95,16 @@ object GeneralModule {
         @Singleton
         fun provideMoshiAdapter(): Moshi {
             return Moshi.Builder()
+                .addLast(KotlinJsonAdapterFactory())
                 .build()
         }
 
         @Provides
         @Singleton
         fun provideOkhttpClient(): OkHttpClient {
-            val client = OkHttpClient()
-            return client
+            val client = OkHttpClient.Builder()
+                .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+            return client.build()
         }
 
         @Provides
