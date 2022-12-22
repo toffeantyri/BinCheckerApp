@@ -7,6 +7,9 @@ buildscript {
         dagger_hilt_version = '2.4.4'
         dagger_hilt_android_version = '2.44'
         lifecycle_version = '2.5.1'
+        room_version = '2.5.0-alpha03'
+        retrofit_version = '2.9.0'
+        login_interceptor_version = '4.10.0'
     }
 }// Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
