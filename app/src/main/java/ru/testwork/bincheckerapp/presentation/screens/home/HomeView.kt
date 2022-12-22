@@ -1,5 +1,8 @@
 package ru.testwork.bincheckerapp.presentation.screens.home
 
+import android.app.Activity
+import android.os.Handler
+import android.os.Looper
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,6 +13,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -17,9 +21,30 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ru.testwork.bincheckerapp.R
+import ru.testwork.bincheckerapp.presentation.utils.OnBackPressedCallBackCompose
+import ru.testwork.bincheckerapp.presentation.utils.showToast
 
 @Composable
 fun HomeView(viewModel: HomeViewModel = hiltViewModel()) {
+
+    val backPressDoubleClick = remember {
+        mutableStateOf(false)
+    }
+
+    val context = LocalContext.current as Activity
+
+
+    val message = stringResource(id = R.string.double_back_for_exit)
+    OnBackPressedCallBackCompose() {
+        if (backPressDoubleClick.value) {
+            context.finish()
+        } else {
+            context.showToast(message)
+        }
+        backPressDoubleClick.value = true
+        val handler = Looper.myLooper()?.let { Handler(it) }
+        handler?.postDelayed({ backPressDoubleClick.value = false }, 2000)
+    }
 
     var inputBinCode by remember {
         mutableStateOf("45717360")
