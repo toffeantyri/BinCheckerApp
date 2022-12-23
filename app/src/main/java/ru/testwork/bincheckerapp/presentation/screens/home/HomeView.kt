@@ -1,5 +1,6 @@
 package ru.testwork.bincheckerapp.presentation.screens.home
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Handler
 import android.os.Looper
@@ -20,10 +21,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import kotlinx.coroutines.FlowPreview
 import ru.testwork.bincheckerapp.R
 import ru.testwork.bincheckerapp.presentation.utils.OnBackPressedCallBackCompose
 import ru.testwork.bincheckerapp.presentation.utils.showToast
 
+@OptIn(FlowPreview::class)
+@SuppressLint("FlowOperatorInvokedInComposition")
 @Composable
 fun HomeView(viewModel: HomeViewModel = hiltViewModel()) {
 
@@ -31,19 +35,19 @@ fun HomeView(viewModel: HomeViewModel = hiltViewModel()) {
         mutableStateOf(false)
     }
 
-    var inputBinCode by remember {
-        mutableStateOf("45717360")
-    }
 
     val binCodeIsValidate by viewModel.binCodeIsValid.collectAsState()
     val isLoading by viewModel.isLoadingState.collectAsState()
     val binData by viewModel.binDtoFlow.collectAsState()
+    val inputBinCode by viewModel.inputBinCode.collectAsState()
 
     val inputPattern = remember { Regex("^\\d{0,8}\$") }
 
+    val changeInputText = viewModel::changeInputBinCode
+
     val onValueChanged: (text: String) -> Unit = { text ->
         if (text.isEmpty() || text.matches(inputPattern)) {
-            inputBinCode = text
+            changeInputText(text)
             viewModel.validateBinCode(text)
         } else {
             if (!inputBinCode.matches(inputPattern)) {
@@ -71,7 +75,7 @@ fun HomeView(viewModel: HomeViewModel = hiltViewModel()) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(horizontal = 16.dp)
             .verticalScroll(enabled = true, state = ScrollState(0))
     ) {
 
@@ -108,7 +112,7 @@ fun HomeView(viewModel: HomeViewModel = hiltViewModel()) {
             .padding(vertical = 4.dp),
             enabled = !isLoading,
             shape = RoundedCornerShape(8.dp),
-            onClick = { onSearchBinCodeClick(inputBinCode) }) {
+            onClick = { onSearchBinCodeClick() }) {
             Text(
                 modifier = Modifier.padding(4.dp),
                 text = stringResource(id = R.string.button_check),
@@ -117,7 +121,7 @@ fun HomeView(viewModel: HomeViewModel = hiltViewModel()) {
         }
 
         AnimatedVisibility(visible = binData != null) {
-            BinInfoCard(binInfoModel = binData)
+            BinInfoCard(data = binData)
         }
 
         Spacer(

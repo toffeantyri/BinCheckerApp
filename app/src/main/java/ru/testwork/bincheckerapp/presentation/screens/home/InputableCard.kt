@@ -34,7 +34,7 @@ fun InputableCard(
     inputText: String,
     binCodeIsValid: Boolean,
     onValueChanged: (text: String) -> Unit,
-    onInputSearchBarCode: (text: String) -> Unit,
+    onInputSearchBarCode: () -> Unit,
     isLoading: Boolean
 ) {
 
@@ -141,7 +141,7 @@ fun InputableCard(
                         imeAction = ImeAction.Done,
                     ),
                     keyboardActions = KeyboardActions(onDone = {
-                        onInputSearchBarCode(inputText)
+                        onInputSearchBarCode()
                         keyboardController?.hide()
                     }),
                     isError = !binCodeIsValid,

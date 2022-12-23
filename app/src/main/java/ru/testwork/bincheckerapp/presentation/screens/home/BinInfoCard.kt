@@ -21,7 +21,17 @@ import ru.testwork.bincheckerapp.data.models.remote.Country
 import ru.testwork.bincheckerapp.presentation.theme.LightLightGray
 
 @Composable
-fun BinInfoCard(binInfoModel: BinInfoModel?) {
+fun BinInfoCard(data: BinInfoModel?) {
+
+
+    val titleNoInfo = stringResource(
+        id = R.string.info_title_with_number_error
+    )
+
+    val titleInfoIsExist = stringResource(
+        id = R.string.info_title_with_number,
+        (data?.binCode ?: 0)
+    )
 
     Card(
         modifier = Modifier
@@ -37,20 +47,14 @@ fun BinInfoCard(binInfoModel: BinInfoModel?) {
 
             Text(
                 modifier = Modifier.fillMaxWidth(),
-                text = if (binInfoModel != null) stringResource(
-                    id = R.string.info_title_with_number,
-                    binInfoModel.binCode
-                ) else stringResource(
-                    id =
-                    R.string.info_title_with_number_error
-                ),
+                text = if (data != null) titleInfoIsExist else titleNoInfo,
                 fontSize = 16.sp,
                 color = Color.DarkGray,
                 fontWeight = FontWeight.SemiBold,
                 textAlign = TextAlign.Center
             )
 
-            AnimatedVisibility(visible = binInfoModel?.bank != null) {
+            AnimatedVisibility(visible = data?.bank != null) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -65,21 +69,19 @@ fun BinInfoCard(binInfoModel: BinInfoModel?) {
                         fontWeight = FontWeight.Normal,
                         textAlign = TextAlign.Center
                     )
-                    AnimatedVisibility(visible = binInfoModel?.bank?.name != null) {
-                        Text(
-                            modifier = Modifier.fillMaxWidth(),
-                            text = binInfoModel?.bank?.name ?: "?",
-                            fontSize = 20.sp,
-                            color = Color.Black,
-                            fontWeight = FontWeight.SemiBold,
-                            textAlign = TextAlign.Center
-                        )
-                    }
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = data?.bank?.name ?: "?",
+                        fontSize = 20.sp,
+                        color = Color.Black,
+                        fontWeight = FontWeight.SemiBold,
+                        textAlign = TextAlign.Center
+                    )
 
-                    AnimatedVisibility(visible = binInfoModel?.bank?.url != null) {
+                    AnimatedVisibility(visible = data?.bank?.url != null) {
                         Text(
                             modifier = Modifier.fillMaxWidth(),
-                            text = (binInfoModel?.bank?.url ?: "?"),
+                            text = (data?.bank?.url ?: "?"),
                             fontSize = 16.sp,
                             color = Color.Blue,
                             fontWeight = FontWeight.SemiBold,
@@ -87,20 +89,20 @@ fun BinInfoCard(binInfoModel: BinInfoModel?) {
                         )
                     }
 
-                    AnimatedVisibility(visible = binInfoModel?.bank?.phone != null) {
+                    AnimatedVisibility(visible = data?.bank?.phone != null) {
                         Text(
                             modifier = Modifier.fillMaxWidth(),
-                            text = binInfoModel?.bank?.phone ?: "?",
+                            text = data?.bank?.phone ?: "?",
                             fontSize = 16.sp,
                             color = Color.Black,
                             fontWeight = FontWeight.SemiBold,
                             textAlign = TextAlign.Center
                         )
                     }
-                    AnimatedVisibility(visible = binInfoModel?.bank?.city != null) {
+                    AnimatedVisibility(visible = data?.bank?.city != null) {
                         Text(
                             modifier = Modifier.fillMaxWidth(),
-                            text = binInfoModel?.bank?.city ?: "?",
+                            text = data?.bank?.city ?: "?",
                             fontSize = 16.sp,
                             color = Color.Black,
                             fontWeight = FontWeight.SemiBold,
@@ -119,14 +121,14 @@ fun BinInfoCard(binInfoModel: BinInfoModel?) {
                     modifier = Modifier
                         .weight(1f),
                     title = stringResource(id = R.string.scheme_network),
-                    value = binInfoModel?.scheme
+                    value = data?.scheme
                 )
 
                 SimpleColumn(
                     modifier = Modifier
                         .weight(1f),
                     title = stringResource(id = R.string.TYPE),
-                    value = binInfoModel?.type
+                    value = data?.type
                 )
             }
 
@@ -139,17 +141,16 @@ fun BinInfoCard(binInfoModel: BinInfoModel?) {
                     modifier = Modifier
                         .weight(1f),
                     title = stringResource(id = R.string.BRAND),
-                    value = binInfoModel?.brand,
+                    value = data?.brand,
                 )
 
                 SimpleColumn(
                     modifier = Modifier
                         .weight(1f),
                     title = stringResource(id = R.string.PREPAID),
-                    value = if (binInfoModel?.prepaid != null) {
-                        if (binInfoModel.prepaid) stringResource(id = R.string.yes) else stringResource(
-                            id = R.string.no
-                        )
+                    value = if (data?.prepaid != null) {
+                        if (data.prepaid == true) stringResource(id = R.string.yes)
+                        else stringResource(id = R.string.no)
                     } else "?"
                 )
             }
@@ -171,8 +172,8 @@ fun BinInfoCard(binInfoModel: BinInfoModel?) {
                     modifier = Modifier
                         .weight(1f),
                     title = stringResource(id = R.string.length),
-                    value = if (binInfoModel?.number?.length != null) {
-                        binInfoModel.number.length.toString()
+                    value = if (data?.number?.length != null) {
+                        data.number.length.toString()
                     } else "?"
                 )
 
@@ -180,8 +181,8 @@ fun BinInfoCard(binInfoModel: BinInfoModel?) {
                     modifier = Modifier
                         .weight(1f),
                     title = stringResource(id = R.string.luhn),
-                    value = if (binInfoModel?.number?.luhn != null) {
-                        binInfoModel.number.luhn.toString()
+                    value = if (data?.number?.luhn != null) {
+                        data.number.luhn.toString()
                     } else "?"
                 )
             }
@@ -197,7 +198,7 @@ fun BinInfoCard(binInfoModel: BinInfoModel?) {
 
             Text(
                 modifier = Modifier.fillMaxWidth(),
-                text = binInfoModel?.country?.name ?: "?",
+                text = data?.country?.name ?: "?",
                 fontSize = 20.sp,
                 color = Color.Black,
                 fontWeight = FontWeight.SemiBold,
@@ -206,12 +207,12 @@ fun BinInfoCard(binInfoModel: BinInfoModel?) {
 
             SimpleRowRow(
                 leftTitle = stringResource(id = R.string.latitude),
-                leftValue = if (binInfoModel?.country?.latitude != null) {
-                    binInfoModel.country.latitude.toString()
+                leftValue = if (data?.country?.latitude != null) {
+                    data.country.latitude.toString()
                 } else "?",
                 rightTitle = stringResource(id = R.string.longitude),
-                rightValue = if (binInfoModel?.country?.longitude != null) {
-                    binInfoModel.country.longitude.toString()
+                rightValue = if (data?.country?.longitude != null) {
+                    data.country.longitude.toString()
                 } else "?",
             )
 
@@ -260,7 +261,7 @@ fun SimpleRowRow(
         horizontalArrangement = Arrangement.SpaceAround
     ) {
 
-        Row() {
+        Row {
             Text(
                 text = leftTitle,
                 fontSize = 14.sp,
@@ -277,7 +278,7 @@ fun SimpleRowRow(
             )
         }
 
-        Row() {
+        Row {
             Text(
                 text = rightTitle,
                 fontSize = 14.sp,
@@ -302,7 +303,7 @@ fun SimpleRowRow(
 @Preview(showBackground = true)
 fun PreviewBinInfoCard() {
     BinInfoCard(
-        binInfoModel = BinInfoModel(
+        data = BinInfoModel(
             binCode = 12345678,
             bank = Bank(
                 city = "Москва",

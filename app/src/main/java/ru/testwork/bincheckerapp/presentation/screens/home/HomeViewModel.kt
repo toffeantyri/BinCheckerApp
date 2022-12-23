@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import ru.testwork.bincheckerapp.TAG
@@ -20,6 +21,8 @@ class HomeViewModel @Inject constructor(private val binCodeInteractor: IBinCodeI
 
     val binCodeIsValid = MutableStateFlow(value = true)
 
+    val inputBinCode = MutableStateFlow(value = "45717360")
+
     val isLoadingState = MutableStateFlow(value = false)
 
     val binDtoFlow = MutableStateFlow<BinInfoModel?>(value = null)
@@ -35,26 +38,36 @@ class HomeViewModel @Inject constructor(private val binCodeInteractor: IBinCodeI
         }
     }
 
-    fun getBinCodeInfo(text: String) {
+    fun changeInputBinCode(text: String) {
+        inputBinCode.tryEmit(text)
+    }
+
+    fun getBinCodeInfo() {
         viewModelScope.launch {
-            if (validateBinCode(text)) {
+            if (validateBinCode(inputBinCode.value)) {
+                emitNewValue(null)
                 kotlin.runCatching {
-                    Log.d(TAG, "VM: $text")
+                    Log.d(TAG, "VM: $inputBinCode.value")
                     isLoadingState.tryEmit(true)
-                    binCodeInteractor.getBinCodeInfo(text.toInt())
+                    binCodeInteractor.getBinCodeInfo(inputBinCode.value.toInt())
                 }.onSuccess {
                     isLoadingState.tryEmit(false)
-                    binDtoFlow.tryEmit(it)
+                    emitNewValue(it)
                     Log.d(TAG, "VM success: $it")
                 }.onFailure {
                     isLoadingState.tryEmit(false)
                     Log.d(TAG, "VM error: $it")
-                    binDtoFlow.tryEmit(null)
+                    emitNewValue(null)
                 }
             } else {
                 binCodeIsValid.tryEmit(false)
             }
         }
+    }
+
+    private suspend fun emitNewValue(newValue: BinInfoModel?) {
+        delay(500)
+        binDtoFlow.value = newValue
     }
 
 }
