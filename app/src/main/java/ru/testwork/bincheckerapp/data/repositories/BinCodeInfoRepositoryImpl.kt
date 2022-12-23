@@ -14,20 +14,22 @@ class BinCodeInfoRepositoryImpl @Inject constructor(
 
     override suspend fun getBinCodeInfo(code: Int): BinInfoModel {
         Log.d(TAG, "REPO : $code")
-        return if (!checkCodeIsAlreadySaved(code)) {
-            val result = remoteSource.getBinCodeInfo(code)
-            Log.d(TAG, "REPO R: $result")
-            result
+        val localResult = getFromDbByCode(code)
+        return if (localResult != null) {
+            Log.d(TAG, "REPO L: $localResult")
+            localResult
         } else {
-            val result = localSource.getBinCodeInfo(code)
-            Log.d(TAG, "REPO L: $result")
+            val result = remoteSource.getBinCodeInfo(code)
+            localSource.saveResultBinCodeInfo(result)
+            Log.d(TAG, "REPO R: $result")
             result
         }
     }
 
-    private suspend fun checkCodeIsAlreadySaved(code: Int): Boolean {
-        //todo
-        return false
+    private suspend fun getFromDbByCode(code: Int): BinInfoModel? {
+        val result = localSource.getBinCodeInfo(code)
+        Log.d(TAG, "REPO DB: $result")
+        return result
 
     }
 

@@ -1,10 +1,12 @@
 package ru.testwork.bincheckerapp.di
 
+import android.content.Context
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -17,6 +19,7 @@ import ru.testwork.bincheckerapp.data.datasources.BinCodeRemoteDataSource
 import ru.testwork.bincheckerapp.data.datasources.BinCodeRemoteDataSourceImpl
 import ru.testwork.bincheckerapp.data.repositories.BinCodeInfoRepository
 import ru.testwork.bincheckerapp.data.repositories.BinCodeInfoRepositoryImpl
+import ru.testwork.bincheckerapp.data.room.AppRoomDatabase
 import ru.testwork.bincheckerapp.domain.IBinCodeInfoInteractor
 import ru.testwork.bincheckerapp.domain.IBinCodeInfoInteractorImpl
 import javax.inject.Singleton
@@ -25,6 +28,18 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object GeneralModule {
 
+
+    @Module
+    @InstallIn(SingletonComponent::class)
+    object LocalResources {
+
+        @Provides
+        @Singleton
+        fun provideDb(@ApplicationContext context: Context): AppRoomDatabase {
+            return AppRoomDatabase.getInstance(context)
+        }
+
+    }
 
     @Module
     @InstallIn(SingletonComponent::class)
@@ -66,8 +81,8 @@ object GeneralModule {
 
         @Singleton
         @Provides
-        fun provideLocalBinCodeDataSource(): BinCodeLocalDataSource {
-            return BinCodeLocalDataSourceImpl()
+        fun provideLocalBinCodeDataSource(appRoomDatabase: AppRoomDatabase): BinCodeLocalDataSource {
+            return BinCodeLocalDataSourceImpl(appRoomDatabase.getBinInfoDao())
         }
     }
 

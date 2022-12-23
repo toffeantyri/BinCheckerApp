@@ -18,6 +18,7 @@ import ru.testwork.bincheckerapp.R
 import ru.testwork.bincheckerapp.data.models.remote.Bank
 import ru.testwork.bincheckerapp.data.models.remote.BinInfoModel
 import ru.testwork.bincheckerapp.data.models.remote.Country
+import ru.testwork.bincheckerapp.data.models.remote.Number
 import ru.testwork.bincheckerapp.presentation.theme.LightLightGray
 
 @Composable
@@ -71,7 +72,7 @@ fun BinInfoCard(data: BinInfoModel?) {
                     )
                     Text(
                         modifier = Modifier.fillMaxWidth(),
-                        text = data?.bank?.name ?: "?",
+                        text = data?.bank?.bankName ?: "?",
                         fontSize = 20.sp,
                         color = Color.Black,
                         fontWeight = FontWeight.SemiBold,
@@ -307,7 +308,7 @@ fun PreviewBinInfoCard() {
             binCode = 12345678,
             bank = Bank(
                 city = "Москва",
-                name = "Jyske Bank, Hjørring",
+                bankName = "Jyske Bank, Hjørring",
                 phone = " 8 800 922 00 00",
                 url = "www.leningrad-spb.ru"
             ),
@@ -321,7 +322,7 @@ fun PreviewBinInfoCard() {
                 name = "Denmark",
                 numeric = "208"
             ),
-            number = ru.testwork.bincheckerapp.data.models.remote.Number(
+            number = Number(
                 length = 16,
                 luhn = true
             ),

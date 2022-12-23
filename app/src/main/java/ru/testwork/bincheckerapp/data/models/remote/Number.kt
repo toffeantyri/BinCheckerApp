@@ -4,6 +4,6 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class Number(
-    val length: Int?,
-    val luhn: Boolean?
+    val length: Int? = null,
+    val luhn: Boolean? = null
 )
