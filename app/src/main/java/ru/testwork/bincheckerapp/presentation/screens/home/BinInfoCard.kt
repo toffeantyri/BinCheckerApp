@@ -19,7 +19,7 @@ import ru.testwork.bincheckerapp.data.models.remote.Bank
 import ru.testwork.bincheckerapp.data.models.remote.BinInfoModel
 import ru.testwork.bincheckerapp.data.models.remote.Country
 import ru.testwork.bincheckerapp.data.models.remote.Number
-import ru.testwork.bincheckerapp.presentation.theme.LightLightGray
+import ru.testwork.bincheckerapp.presentation.theme.LightLightBlue
 
 @Composable
 fun BinInfoCard(data: BinInfoModel?) {
@@ -38,7 +38,7 @@ fun BinInfoCard(data: BinInfoModel?) {
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight(),
-        backgroundColor = LightLightGray
+        backgroundColor = LightLightBlue
     ) {
         Column(
             modifier = Modifier

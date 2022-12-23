@@ -8,6 +8,7 @@
 
     <string name="double_back_for_exit">Нажмите назад еще раз что бы выйти из приложения</string>
     <string name="button_check">Check BIN</string>
+    <string name="bin_code">BIN код : </string>
 
     <string name="scheme_network">SCHEME / NETWORK</string>
     <string name="TYPE">TYPE</string>
@@ -24,6 +25,7 @@
     <string name="BANK">BANK</string>
     <string name="info_title_with_number">Информация по BIN коду %d</string>
     <string name="info_title_with_number_error">Информация не получена</string>
+    <string name="title_history_view">История найденных BIN кодов</string>
 
 
 </resources>

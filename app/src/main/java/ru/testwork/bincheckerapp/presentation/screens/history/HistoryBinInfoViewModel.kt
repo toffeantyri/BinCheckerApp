@@ -18,13 +18,15 @@ class HistoryBinInfoViewModel @Inject constructor(
 
     val listData: MutableStateFlow<List<BinInfoModel>> = MutableStateFlow(listOf())
 
+    val openedCards = MutableStateFlow(listOf<Int>())
+
 
     init {
         Log.d(TAG, "VM INIT")
         loadBinInfoListHistory()
     }
 
-    private fun loadBinInfoListHistory() {
+    fun loadBinInfoListHistory() {
         viewModelScope.launch {
             kotlin.runCatching {
                 binCodeInfoInteractor.getHistoryListInfo()
@@ -49,6 +51,12 @@ class HistoryBinInfoViewModel @Inject constructor(
                 Log.d(TAG, "VM CLEAR ERROR ")
             }
 
+        }
+    }
+
+    fun onCardOpenClose(positionCard: Int) {
+        openedCards.value = openedCards.value.toMutableList().also { list ->
+            if (list.contains(positionCard)) list.remove(positionCard) else list.add(positionCard)
         }
     }
 

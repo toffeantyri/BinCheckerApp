@@ -21,12 +21,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import kotlinx.coroutines.FlowPreview
 import ru.testwork.bincheckerapp.R
 import ru.testwork.bincheckerapp.presentation.utils.OnBackPressedCallBackCompose
 import ru.testwork.bincheckerapp.presentation.utils.showToast
 
-@OptIn(FlowPreview::class)
 @SuppressLint("FlowOperatorInvokedInComposition")
 @Composable
 fun HomeView(viewModel: HomeViewModel = hiltViewModel()) {
