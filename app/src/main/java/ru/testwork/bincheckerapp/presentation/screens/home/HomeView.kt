@@ -36,9 +36,7 @@ fun HomeView(viewModel: HomeViewModel = hiltViewModel()) {
     }
 
     val binCodeIsValidate by viewModel.binCodeIsValid.collectAsState()
-
     val isLoading by viewModel.isLoadingState.collectAsState()
-
     val binData by viewModel.binDtoFlow.collectAsState()
 
     val inputPattern = remember { Regex("^\\d{0,8}\$") }
@@ -120,10 +118,7 @@ fun HomeView(viewModel: HomeViewModel = hiltViewModel()) {
         }
 
         AnimatedVisibility(visible = binData != null) {
-            binData?.let { binData ->
-                BinInfoCard(binInfoModel = binData)
-            }
-
+            BinInfoCard(binInfoModel = binData)
         }
     }
 }

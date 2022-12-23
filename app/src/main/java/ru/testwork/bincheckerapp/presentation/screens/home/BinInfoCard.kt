@@ -20,7 +20,7 @@ import ru.testwork.bincheckerapp.data.models.remote.Country
 import ru.testwork.bincheckerapp.presentation.theme.LightLightGray
 
 @Composable
-fun BinInfoCard(binInfoModel: BinInfoModel) {
+fun BinInfoCard(binInfoModel: BinInfoModel?) {
 
     Card(
         modifier = Modifier
@@ -42,14 +42,14 @@ fun BinInfoCard(binInfoModel: BinInfoModel) {
                     modifier = Modifier
                         .weight(1f),
                     title = stringResource(id = R.string.scheme_network),
-                    value = binInfoModel.scheme
+                    value = binInfoModel?.scheme
                 )
 
                 SimpleColumn(
                     modifier = Modifier
                         .weight(1f),
                     title = stringResource(id = R.string.TYPE),
-                    value = binInfoModel.type
+                    value = binInfoModel?.type
                 )
             }
 
@@ -62,14 +62,14 @@ fun BinInfoCard(binInfoModel: BinInfoModel) {
                     modifier = Modifier
                         .weight(1f),
                     title = stringResource(id = R.string.BRAND),
-                    value = binInfoModel.brand,
+                    value = binInfoModel?.brand,
                 )
 
                 SimpleColumn(
                     modifier = Modifier
                         .weight(1f),
                     title = stringResource(id = R.string.PREPAID),
-                    value = if (binInfoModel.prepaid != null) {
+                    value = if (binInfoModel?.prepaid != null) {
                         if (binInfoModel.prepaid) stringResource(id = R.string.yes) else stringResource(
                             id = R.string.no
                         )
