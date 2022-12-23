@@ -17,6 +17,7 @@ import ru.testwork.bincheckerapp.data.datasources.BinCodeLocalDataSource
 import ru.testwork.bincheckerapp.data.datasources.BinCodeLocalDataSourceImpl
 import ru.testwork.bincheckerapp.data.datasources.BinCodeRemoteDataSource
 import ru.testwork.bincheckerapp.data.datasources.BinCodeRemoteDataSourceImpl
+import ru.testwork.bincheckerapp.data.repositories.BinCodeHistoryRepositoryImpl
 import ru.testwork.bincheckerapp.data.repositories.BinCodeInfoRepository
 import ru.testwork.bincheckerapp.data.repositories.BinCodeInfoRepositoryImpl
 import ru.testwork.bincheckerapp.data.room.AppRoomDatabase
@@ -56,6 +57,15 @@ object GeneralModule {
                 localSource = localDataSource
             )
         }
+
+        @Singleton
+        @Provides
+        fun provideBinHistoryRepo(
+            localDataSource: BinCodeLocalDataSource
+        ): BinCodeHistoryRepositoryImpl {
+            return BinCodeHistoryRepositoryImpl(localDataSource)
+        }
+
     }
 
     @Module
