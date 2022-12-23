@@ -6,4 +6,8 @@ interface IBinCodeInfoInteractor {
 
     suspend fun getBinCodeInfo(code: Int): BinInfoModel
 
+    suspend fun getHistoryListInfo(): List<BinInfoModel>
+
+    suspend fun clearHistory()
+
 }

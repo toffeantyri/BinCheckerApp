@@ -17,6 +17,7 @@ import ru.testwork.bincheckerapp.data.datasources.BinCodeLocalDataSource
 import ru.testwork.bincheckerapp.data.datasources.BinCodeLocalDataSourceImpl
 import ru.testwork.bincheckerapp.data.datasources.BinCodeRemoteDataSource
 import ru.testwork.bincheckerapp.data.datasources.BinCodeRemoteDataSourceImpl
+import ru.testwork.bincheckerapp.data.repositories.BinCodeHistoryRepository
 import ru.testwork.bincheckerapp.data.repositories.BinCodeHistoryRepositoryImpl
 import ru.testwork.bincheckerapp.data.repositories.BinCodeInfoRepository
 import ru.testwork.bincheckerapp.data.repositories.BinCodeInfoRepositoryImpl
@@ -62,7 +63,7 @@ object GeneralModule {
         @Provides
         fun provideBinHistoryRepo(
             localDataSource: BinCodeLocalDataSource
-        ): BinCodeHistoryRepositoryImpl {
+        ): BinCodeHistoryRepository {
             return BinCodeHistoryRepositoryImpl(localDataSource)
         }
 
@@ -74,8 +75,11 @@ object GeneralModule {
 
         @Singleton
         @Provides
-        fun provideBinCodeInteractor(binCodeRepo: BinCodeInfoRepository): IBinCodeInfoInteractor {
-            return IBinCodeInfoInteractorImpl(binCodeRepo)
+        fun provideBinCodeInteractor(
+            binCodeRepo: BinCodeInfoRepository,
+            binInfoHistoryRepository: BinCodeHistoryRepository
+        ): IBinCodeInfoInteractor {
+            return IBinCodeInfoInteractorImpl(binCodeRepo, binInfoHistoryRepository)
         }
     }
 
