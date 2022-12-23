@@ -11,7 +11,7 @@ import ru.testwork.bincheckerapp.data.room.TABLE_NAME_BININFO
 data class BinInfoEntity(
     @PrimaryKey(autoGenerate = false) @ColumnInfo(name = "bin_code") var binCode: Int = 0,
     //Embedded example
-    @Embedded val bank: Bank?,
+    @Embedded val bank: Bank? = Bank(),
     @ColumnInfo(name = "brand") val brand: String? = null,
     //Country
     @ColumnInfo(name = "alpha2") val alpha2C: String? = null,

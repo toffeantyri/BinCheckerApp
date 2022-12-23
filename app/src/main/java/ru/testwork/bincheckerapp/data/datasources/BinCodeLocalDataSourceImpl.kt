@@ -26,4 +26,8 @@ class BinCodeLocalDataSourceImpl @Inject constructor(private val dao: BinInfoDao
     override suspend fun saveResultBinCodeInfo(binCodeModel: BinInfoModel) {
         dao.insert(binCodeModel.toBinInfoEntity())
     }
+
+    override suspend fun clearDB() {
+        dao.clearDb()
+    }
 }

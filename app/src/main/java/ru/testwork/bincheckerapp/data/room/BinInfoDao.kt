@@ -17,4 +17,7 @@ interface BinInfoDao {
     @Query("SELECT * FROM $TABLE_NAME_BININFO WHERE bin_code = :code ")
     suspend fun getById(code: Int): BinInfoEntity?
 
+    @Query("DELETE FROM $TABLE_NAME_BININFO")
+    suspend fun clearDb()
+
 }

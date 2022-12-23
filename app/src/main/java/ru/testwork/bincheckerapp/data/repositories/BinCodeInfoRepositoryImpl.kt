@@ -30,8 +30,6 @@ class BinCodeInfoRepositoryImpl @Inject constructor(
         val result = localSource.getBinCodeInfo(code)
         Log.d(TAG, "REPO DB: $result")
         return result
-
     }
-
 
 }

@@ -10,4 +10,6 @@ interface BinCodeLocalDataSource {
 
     suspend fun saveResultBinCodeInfo(binCodeModel: BinInfoModel)
 
+    suspend fun clearDB()
+
 }
