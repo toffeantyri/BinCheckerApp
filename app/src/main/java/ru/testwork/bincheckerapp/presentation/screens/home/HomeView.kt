@@ -54,7 +54,6 @@ fun HomeView(viewModel: HomeViewModel = hiltViewModel()) {
 
     val onSearchBinCodeClick = viewModel::getBinCodeInfo
 
-
     val context = LocalContext.current as Activity
 
     val message = stringResource(id = R.string.double_back_for_exit)
@@ -120,6 +119,12 @@ fun HomeView(viewModel: HomeViewModel = hiltViewModel()) {
         AnimatedVisibility(visible = binData != null) {
             BinInfoCard(binInfoModel = binData)
         }
+
+        Spacer(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp)
+        )
     }
 }
 

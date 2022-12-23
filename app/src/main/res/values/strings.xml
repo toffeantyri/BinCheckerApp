@@ -15,6 +15,15 @@
     <string name="PREPAID">PREPAID</string>
     <string name="yes">yes</string>
     <string name="no">no</string>
+    <string name="CARD_NUMBER">CARD NUMBER</string>
+    <string name="length">length</string>
+    <string name="luhn">luhn</string>
+    <string name="COUNTRY">COUNTRY</string>
+    <string name="latitude">latitude : </string>
+    <string name="longitude">longitude : </string>
+    <string name="BANK">BANK</string>
+    <string name="info_title_with_number">Информация по BIN коду %d</string>
+    <string name="info_title_with_number_error">Информация не получена</string>
 
 
 </resources>
