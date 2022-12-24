@@ -1,7 +1,6 @@
 package ru.testwork.bincheckerapp.presentation.screens.history
 
 import android.util.Log
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -21,7 +20,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ru.testwork.bincheckerapp.R
-import ru.testwork.bincheckerapp.TAG
+import ru.testwork.bincheckerapp.presentation.TAG
+
 
 @Preview(showBackground = true)
 @Composable
@@ -36,9 +36,6 @@ fun HistoryDetailsView(viewModel: HistoryBinInfoViewModel = hiltViewModel()) {
         mutableStateOf(false)
     }
 
-    val isEmpty by remember {
-        mutableStateOf(binInfoList.isEmpty())
-    }
 
     DialogClearHistory(visible = dialogVisible.value, onActionSubmit = {
         onClearHistorySubmit()
@@ -47,11 +44,8 @@ fun HistoryDetailsView(viewModel: HistoryBinInfoViewModel = hiltViewModel()) {
         dialogVisible.value = !dialogVisible.value
     })
 
-
-
-
-
     Log.d(TAG, "View: $binInfoList")
+
 
     LazyColumn(
         modifier = Modifier
@@ -95,12 +89,12 @@ fun HistoryDetailsView(viewModel: HistoryBinInfoViewModel = hiltViewModel()) {
             }
         }
 
-        item {
-            AnimatedVisibility(visible = isEmpty) {
+        if (binInfoList.isEmpty()) {
+            item {
                 Text(
                     modifier = Modifier
                         .wrapContentSize()
-                        .padding(16.dp),
+                        .padding(32.dp),
                     text = stringResource(id = R.string.history_is_empty),
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Normal,
@@ -118,10 +112,9 @@ fun HistoryDetailsView(viewModel: HistoryBinInfoViewModel = hiltViewModel()) {
 
             Spacer(modifier = Modifier.padding(vertical = 4.dp))
         }
-
-
     }
-
 }
+
+
 
 

@@ -7,9 +7,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import ru.testwork.bincheckerapp.TAG
 import ru.testwork.bincheckerapp.data.models.remote.BinInfoModel
 import ru.testwork.bincheckerapp.domain.IBinCodeInfoInteractor
+import ru.testwork.bincheckerapp.presentation.TAG
 import javax.inject.Inject
 
 
