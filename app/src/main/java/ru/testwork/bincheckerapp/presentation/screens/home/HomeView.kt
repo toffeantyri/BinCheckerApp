@@ -12,9 +12,11 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -25,6 +27,7 @@ import ru.testwork.bincheckerapp.R
 import ru.testwork.bincheckerapp.presentation.utils.OnBackPressedCallBackCompose
 import ru.testwork.bincheckerapp.presentation.utils.showToast
 
+@OptIn(ExperimentalComposeUiApi::class)
 @SuppressLint("FlowOperatorInvokedInComposition")
 @Composable
 fun HomeView(viewModel: HomeViewModel = hiltViewModel()) {
@@ -57,6 +60,8 @@ fun HomeView(viewModel: HomeViewModel = hiltViewModel()) {
     val onSearchBinCodeClick = viewModel::getBinCodeInfo
 
     val context = LocalContext.current as Activity
+
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     val message = stringResource(id = R.string.double_back_for_exit)
     OnBackPressedCallBackCompose() {
@@ -110,7 +115,10 @@ fun HomeView(viewModel: HomeViewModel = hiltViewModel()) {
             .padding(vertical = 4.dp),
             enabled = !isLoading,
             shape = RoundedCornerShape(8.dp),
-            onClick = { onSearchBinCodeClick() }) {
+            onClick = {
+                keyboardController?.hide()
+                onSearchBinCodeClick()
+            }) {
             Text(
                 modifier = Modifier.padding(4.dp),
                 text = stringResource(id = R.string.button_check),

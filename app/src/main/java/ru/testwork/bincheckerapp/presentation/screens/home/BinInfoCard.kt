@@ -5,6 +5,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -34,6 +37,12 @@ fun BinInfoCard(data: BinInfoModel?) {
         (data?.binCode ?: 0)
     )
 
+    val titleText by remember {
+        mutableStateOf(
+            if (data != null) titleInfoIsExist else titleNoInfo
+        )
+    }
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -48,68 +57,66 @@ fun BinInfoCard(data: BinInfoModel?) {
 
             Text(
                 modifier = Modifier.fillMaxWidth(),
-                text = if (data != null) titleInfoIsExist else titleNoInfo,
+                text = titleText,
                 fontSize = 16.sp,
                 color = Color.DarkGray,
                 fontWeight = FontWeight.SemiBold,
                 textAlign = TextAlign.Center
             )
 
-            AnimatedVisibility(visible = data?.bank != null) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentHeight()
-                ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+            ) {
 
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = stringResource(id = R.string.BANK),
+                    fontSize = 14.sp,
+                    color = Color.Gray,
+                    fontWeight = FontWeight.Normal,
+                    textAlign = TextAlign.Center
+                )
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = data?.bank?.bankName ?: "?",
+                    fontSize = 20.sp,
+                    color = Color.Black,
+                    fontWeight = FontWeight.SemiBold,
+                    textAlign = TextAlign.Center
+                )
+
+                AnimatedVisibility(visible = data?.bank?.url != null) {
                     Text(
                         modifier = Modifier.fillMaxWidth(),
-                        text = stringResource(id = R.string.BANK),
-                        fontSize = 14.sp,
-                        color = Color.Gray,
-                        fontWeight = FontWeight.Normal,
+                        text = (data?.bank?.url ?: "?"),
+                        fontSize = 16.sp,
+                        color = Color.Blue,
+                        fontWeight = FontWeight.SemiBold,
                         textAlign = TextAlign.Center
                     )
+                }
+
+                AnimatedVisibility(visible = data?.bank?.phone != null) {
                     Text(
                         modifier = Modifier.fillMaxWidth(),
-                        text = data?.bank?.bankName ?: "?",
-                        fontSize = 20.sp,
+                        text = data?.bank?.phone ?: "?",
+                        fontSize = 16.sp,
                         color = Color.Black,
                         fontWeight = FontWeight.SemiBold,
                         textAlign = TextAlign.Center
                     )
-
-                    AnimatedVisibility(visible = data?.bank?.url != null) {
-                        Text(
-                            modifier = Modifier.fillMaxWidth(),
-                            text = (data?.bank?.url ?: "?"),
-                            fontSize = 16.sp,
-                            color = Color.Blue,
-                            fontWeight = FontWeight.SemiBold,
-                            textAlign = TextAlign.Center
-                        )
-                    }
-
-                    AnimatedVisibility(visible = data?.bank?.phone != null) {
-                        Text(
-                            modifier = Modifier.fillMaxWidth(),
-                            text = data?.bank?.phone ?: "?",
-                            fontSize = 16.sp,
-                            color = Color.Black,
-                            fontWeight = FontWeight.SemiBold,
-                            textAlign = TextAlign.Center
-                        )
-                    }
-                    AnimatedVisibility(visible = data?.bank?.city != null) {
-                        Text(
-                            modifier = Modifier.fillMaxWidth(),
-                            text = data?.bank?.city ?: "?",
-                            fontSize = 16.sp,
-                            color = Color.Black,
-                            fontWeight = FontWeight.SemiBold,
-                            textAlign = TextAlign.Center
-                        )
-                    }
+                }
+                AnimatedVisibility(visible = data?.bank?.city != null) {
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = data?.bank?.city ?: "?",
+                        fontSize = 16.sp,
+                        color = Color.Black,
+                        fontWeight = FontWeight.SemiBold,
+                        textAlign = TextAlign.Center
+                    )
                 }
             }
 
