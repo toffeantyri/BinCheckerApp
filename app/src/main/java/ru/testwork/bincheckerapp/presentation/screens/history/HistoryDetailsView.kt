@@ -1,15 +1,14 @@
 package ru.testwork.bincheckerapp.presentation.screens.history
 
 import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,7 +30,26 @@ fun HistoryDetailsView(viewModel: HistoryBinInfoViewModel = hiltViewModel()) {
     val binInfoList by viewModel.listData.collectAsState()
     val expandedCards by viewModel.openedCards.collectAsState()
     val onOpenCloseFun = viewModel::onCardOpenClose
-    val onClearHistory = viewModel::clearHistory
+    val onClearHistorySubmit = viewModel::clearHistory
+
+    val dialogVisible = remember {
+        mutableStateOf(false)
+    }
+
+    val isEmpty by remember {
+        mutableStateOf(binInfoList.isEmpty())
+    }
+
+    DialogClearHistory(visible = dialogVisible.value, onActionSubmit = {
+        onClearHistorySubmit()
+        dialogVisible.value = !dialogVisible.value
+    }, onActionDismiss = {
+        dialogVisible.value = !dialogVisible.value
+    })
+
+
+
+
 
     Log.d(TAG, "View: $binInfoList")
 
@@ -43,7 +61,6 @@ fun HistoryDetailsView(viewModel: HistoryBinInfoViewModel = hiltViewModel()) {
     ) {
 
         item {
-
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -68,13 +85,27 @@ fun HistoryDetailsView(viewModel: HistoryBinInfoViewModel = hiltViewModel()) {
                     modifier = Modifier
                         .size(50.dp, 50.dp)
                         .padding(8.dp),
-                    onClick = onClearHistory
+                    onClick = { dialogVisible.value = true }
                 ) {
                     Icon(
                         imageVector = ImageVector.vectorResource(id = R.drawable.ic_baseline_delete_sweep_24),
                         contentDescription = null,
                     )
                 }
+            }
+        }
+
+        item {
+            AnimatedVisibility(visible = isEmpty) {
+                Text(
+                    modifier = Modifier
+                        .wrapContentSize()
+                        .padding(16.dp),
+                    text = stringResource(id = R.string.history_is_empty),
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Normal,
+                    color = Color.Gray
+                )
             }
         }
 

@@ -26,6 +26,8 @@
     <string name="info_title_with_number">Информация по BIN коду %d</string>
     <string name="info_title_with_number_error">Информация не получена</string>
     <string name="title_history_view">История найденных BIN кодов</string>
+    <string name="dialog_clear_title">Очистить историю?</string>
+    <string name="history_is_empty">Список пуст</string>
 
 
 </resources>
