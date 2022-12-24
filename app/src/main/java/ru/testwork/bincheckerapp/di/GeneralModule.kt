@@ -22,6 +22,7 @@ import ru.testwork.bincheckerapp.data.repositories.BinCodeHistoryRepositoryImpl
 import ru.testwork.bincheckerapp.data.repositories.BinCodeInfoRepository
 import ru.testwork.bincheckerapp.data.repositories.BinCodeInfoRepositoryImpl
 import ru.testwork.bincheckerapp.data.room.AppRoomDatabase
+import ru.testwork.bincheckerapp.data.utils.ErrorHandleInterceptor
 import ru.testwork.bincheckerapp.domain.IBinCodeInfoInteractor
 import ru.testwork.bincheckerapp.domain.IBinCodeInfoInteractorImpl
 import javax.inject.Singleton
@@ -133,6 +134,7 @@ object GeneralModule {
         fun provideOkhttpClient(): OkHttpClient {
             val client = OkHttpClient.Builder()
                 .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+                .addInterceptor(ErrorHandleInterceptor())
             return client.build()
         }
 
@@ -141,5 +143,7 @@ object GeneralModule {
         fun provideApiService(retrofit: Retrofit): ApiService {
             return retrofit.create(ApiService::class.java)
         }
+
+
     }
 }
