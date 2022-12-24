@@ -1,3 +1,33 @@
 <resources>
     <string name="app_name">BinCheckerApp</string>
+
+    <string name="title_input_your_bin">Введите ваш BIN код</string>
+    <string name="bin_code_description">BIN код это первые 6–8 цифр вашей карты</string>
+    <string name="bank">BANK</string>
+    <string name="person_name">PERSON NAME</string>
+
+    <string name="double_back_for_exit">Нажмите назад еще раз что бы выйти из приложения</string>
+    <string name="button_check">Check BIN</string>
+    <string name="bin_code">BIN код : </string>
+
+    <string name="scheme_network">SCHEME / NETWORK</string>
+    <string name="TYPE">TYPE</string>
+    <string name="BRAND">BRAND</string>
+    <string name="PREPAID">PREPAID</string>
+    <string name="yes">yes</string>
+    <string name="no">no</string>
+    <string name="CARD_NUMBER">CARD NUMBER</string>
+    <string name="length">length</string>
+    <string name="luhn">luhn</string>
+    <string name="COUNTRY">COUNTRY</string>
+    <string name="latitude">latitude : </string>
+    <string name="longitude">longitude : </string>
+    <string name="BANK">BANK</string>
+    <string name="info_title_with_number">Информация по BIN коду %d</string>
+    <string name="info_title_with_number_error">Информация не получена</string>
+    <string name="title_history_view">История найденных BIN кодов</string>
+    <string name="dialog_clear_title">Очистить историю?</string>
+    <string name="history_is_empty">Список пуст</string>
+
+
 </resources>

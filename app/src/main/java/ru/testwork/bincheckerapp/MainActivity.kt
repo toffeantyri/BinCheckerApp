@@ -6,38 +6,26 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import ru.testwork.bincheckerapp.ui.theme.BinCheckerAppTheme
+import dagger.hilt.android.AndroidEntryPoint
+import ru.testwork.bincheckerapp.presentation.screens.main.MainLayout
+import ru.testwork.bincheckerapp.presentation.theme.BinCheckerAppTheme
 
+const val TAG = "MyLog"
+
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            BinCheckerAppTheme {
-                // A surface container using the 'background' color from the theme
+            BinCheckerAppTheme(darkTheme = false) {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    Greeting("Android")
+                    MainLayout()
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    BinCheckerAppTheme {
-        Greeting("Android")
     }
 }
