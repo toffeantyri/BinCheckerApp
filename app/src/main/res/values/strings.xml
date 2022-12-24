@@ -28,6 +28,7 @@
     <string name="title_history_view">История найденных BIN кодов</string>
     <string name="dialog_clear_title">Очистить историю?</string>
     <string name="history_is_empty">Список пуст</string>
+    <string name="intent_no_application_exist">Нет подходящих приложений для открытия</string>
 
 
 </resources>

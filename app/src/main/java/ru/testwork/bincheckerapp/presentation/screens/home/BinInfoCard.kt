@@ -1,6 +1,9 @@
 package ru.testwork.bincheckerapp.presentation.screens.home
 
-import androidx.compose.animation.AnimatedVisibility
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
 import androidx.compose.material.Text
@@ -11,6 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -23,10 +27,13 @@ import ru.testwork.bincheckerapp.data.models.remote.BinInfoModel
 import ru.testwork.bincheckerapp.data.models.remote.Country
 import ru.testwork.bincheckerapp.data.models.remote.Number
 import ru.testwork.bincheckerapp.presentation.theme.LightLightBlue
+import ru.testwork.bincheckerapp.presentation.utils.showToast
 
 @Composable
 fun BinInfoCard(data: BinInfoModel?) {
 
+
+    val context = LocalContext.current as Activity
 
     val titleNoInfo = stringResource(
         id = R.string.info_title_with_number_error
@@ -42,6 +49,8 @@ fun BinInfoCard(data: BinInfoModel?) {
             if (data != null) titleInfoIsExist else titleNoInfo
         )
     }
+
+    val errorOpenAnyAppText = stringResource(id = R.string.intent_no_application_exist)
 
     Card(
         modifier = Modifier
@@ -78,6 +87,7 @@ fun BinInfoCard(data: BinInfoModel?) {
                     fontWeight = FontWeight.Normal,
                     textAlign = TextAlign.Center
                 )
+
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = data?.bank?.bankName ?: "?",
@@ -87,10 +97,24 @@ fun BinInfoCard(data: BinInfoModel?) {
                     textAlign = TextAlign.Center
                 )
 
-                AnimatedVisibility(visible = data?.bank?.url != null) {
+                if (data?.bank?.url != null) {
+
+                    val browserIntent = Intent(
+                        Intent.ACTION_VIEW, Uri.parse("https://${data.bank.url}")
+                    )
+
                     Text(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = (data?.bank?.url ?: "?"),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(4.dp)
+                            .clickable {
+                                try {
+                                    context.startActivity(browserIntent)
+                                } catch (e: Exception) {
+                                    context.showToast(errorOpenAnyAppText)
+                                }
+                            },
+                        text = data.bank.url,
                         fontSize = 16.sp,
                         color = Color.Blue,
                         fontWeight = FontWeight.SemiBold,
@@ -98,20 +122,33 @@ fun BinInfoCard(data: BinInfoModel?) {
                     )
                 }
 
-                AnimatedVisibility(visible = data?.bank?.phone != null) {
+                if (data?.bank?.phone != null) {
+
+                    val intent = Intent(Intent.ACTION_DIAL)
+                    intent.data = Uri.parse("tel:${data.bank.phone}")
+
                     Text(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = data?.bank?.phone ?: "?",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(4.dp)
+                            .clickable {
+                                try {
+                                    context.startActivity(intent)
+                                } catch (e: Exception) {
+                                    context.showToast(errorOpenAnyAppText)
+                                }
+                            },
+                        text = data.bank.phone,
                         fontSize = 16.sp,
-                        color = Color.Black,
+                        color = Color.Green,
                         fontWeight = FontWeight.SemiBold,
                         textAlign = TextAlign.Center
                     )
                 }
-                AnimatedVisibility(visible = data?.bank?.city != null) {
+                if (data?.bank?.city != null) {
                     Text(
                         modifier = Modifier.fillMaxWidth(),
-                        text = data?.bank?.city ?: "?",
+                        text = data.bank.city,
                         fontSize = 16.sp,
                         color = Color.Black,
                         fontWeight = FontWeight.SemiBold,
