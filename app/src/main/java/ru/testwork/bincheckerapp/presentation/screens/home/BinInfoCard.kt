@@ -26,6 +26,7 @@ import ru.testwork.bincheckerapp.data.models.remote.Bank
 import ru.testwork.bincheckerapp.data.models.remote.BinInfoModel
 import ru.testwork.bincheckerapp.data.models.remote.Country
 import ru.testwork.bincheckerapp.data.models.remote.Number
+import ru.testwork.bincheckerapp.presentation.theme.DarkGreen
 import ru.testwork.bincheckerapp.presentation.theme.LightLightBlue
 import ru.testwork.bincheckerapp.presentation.utils.showToast
 
@@ -140,7 +141,7 @@ fun BinInfoCard(data: BinInfoModel?) {
                             },
                         text = data.bank.phone,
                         fontSize = 16.sp,
-                        color = Color.Green,
+                        color = DarkGreen,
                         fontWeight = FontWeight.SemiBold,
                         textAlign = TextAlign.Center
                     )
