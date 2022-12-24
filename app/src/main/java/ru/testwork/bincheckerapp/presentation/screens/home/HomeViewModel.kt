@@ -59,8 +59,6 @@ class HomeViewModel @Inject constructor(private val binCodeInteractor: IBinCodeI
                     Log.d(TAG, "VM error: $it")
                     emitNewValue(null)
                     toastMessageState.value = it.message
-                    toastMessageState.value = null
-
                 }
             } else {
                 binCodeIsValid.tryEmit(false)
@@ -71,6 +69,10 @@ class HomeViewModel @Inject constructor(private val binCodeInteractor: IBinCodeI
     private suspend fun emitNewValue(newValue: BinInfoModel?) {
         delay(500)
         binDtoFlow.value = newValue
+    }
+
+    fun clearToastMessage() {
+        toastMessageState.value = null
     }
 
 }

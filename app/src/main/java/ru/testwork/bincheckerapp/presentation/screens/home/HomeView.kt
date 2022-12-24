@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Handler
 import android.os.Looper
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.*
@@ -32,19 +33,23 @@ import ru.testwork.bincheckerapp.presentation.utils.showToast
 @Composable
 fun HomeView(viewModel: HomeViewModel = hiltViewModel()) {
 
+    val context = LocalContext.current as Activity
+    val keyboardController = LocalSoftwareKeyboardController.current
+
     val backPressDoubleClick = remember {
         mutableStateOf(false)
     }
-
 
     val binCodeIsValidate by viewModel.binCodeIsValid.collectAsState()
     val isLoading by viewModel.isLoadingState.collectAsState()
     val binData by viewModel.binDtoFlow.collectAsState()
     val inputBinCode by viewModel.inputBinCode.collectAsState()
+    val toastMessage by viewModel.toastMessageState.collectAsState()
 
     val inputPattern = remember { Regex("^\\d{0,8}\$") }
 
     val changeInputText = viewModel::changeInputBinCode
+    val onSearchBinCodeClick = viewModel::getBinCodeInfo
 
     val onValueChanged: (text: String) -> Unit = { text ->
         if (text.isEmpty() || text.matches(inputPattern)) {
@@ -57,14 +62,14 @@ fun HomeView(viewModel: HomeViewModel = hiltViewModel()) {
         }
     }
 
-    val onSearchBinCodeClick = viewModel::getBinCodeInfo
+    toastMessage?.let {
+        context.showToast(it, Toast.LENGTH_LONG)
+        viewModel.clearToastMessage()
+    }
 
-    val context = LocalContext.current as Activity
-
-    val keyboardController = LocalSoftwareKeyboardController.current
 
     val message = stringResource(id = R.string.double_back_for_exit)
-    OnBackPressedCallBackCompose() {
+    OnBackPressedCallBackCompose {
         if (backPressDoubleClick.value) {
             context.finish()
         } else {
