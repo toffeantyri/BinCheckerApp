@@ -1,6 +1,7 @@
 package ru.testwork.bincheckerapp.data.repositories
 
 import android.util.Log
+import kotlinx.coroutines.flow.Flow
 import ru.testwork.bincheckerapp.TAG
 import ru.testwork.bincheckerapp.data.datasources.BinCodeLocalDataSource
 import ru.testwork.bincheckerapp.data.models.remote.BinInfoModel
@@ -10,7 +11,7 @@ class BinCodeHistoryRepositoryImpl @Inject constructor(
     private val localDataSource: BinCodeLocalDataSource
 ) : BinCodeHistoryRepository {
 
-    override suspend fun getBinCodeListHistory(): List<BinInfoModel> {
+    override suspend fun getBinCodeListHistory(): Flow<List<BinInfoModel>> {
         val result = localDataSource.getListBinCodeInfo()
         Log.d(TAG, "LIST REPO: $result ")
         return result

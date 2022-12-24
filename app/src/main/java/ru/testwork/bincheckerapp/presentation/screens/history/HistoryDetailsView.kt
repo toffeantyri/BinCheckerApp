@@ -28,10 +28,7 @@ import ru.testwork.bincheckerapp.TAG
 @Composable
 fun HistoryDetailsView(viewModel: HistoryBinInfoViewModel = hiltViewModel()) {
 
-    viewModel.loadBinInfoListHistory()
-
     val binInfoList by viewModel.listData.collectAsState()
-
     val expandedCards by viewModel.openedCards.collectAsState()
     val onOpenCloseFun = viewModel::onCardOpenClose
     val onClearHistory = viewModel::clearHistory

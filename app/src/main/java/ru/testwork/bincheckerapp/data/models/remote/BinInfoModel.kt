@@ -12,4 +12,15 @@ data class BinInfoModel(
     val prepaid: Boolean?,
     val scheme: String?,
     val type: String?
-)
+) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is BinInfoModel) return false
+        if (this.binCode != other.binCode) return false
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return super.hashCode()
+    }
+}

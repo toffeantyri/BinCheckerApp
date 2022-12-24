@@ -1,6 +1,8 @@
 package ru.testwork.bincheckerapp.data.datasources
 
 import android.util.Log
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.mapNotNull
 import ru.testwork.bincheckerapp.TAG
 import ru.testwork.bincheckerapp.data.models.remote.BinInfoModel
 import ru.testwork.bincheckerapp.data.room.BinInfoDao
@@ -17,10 +19,8 @@ class BinCodeLocalDataSourceImpl @Inject constructor(private val dao: BinInfoDao
         return result.toBinInfoModel()
     }
 
-    override suspend fun getListBinCodeInfo(): List<BinInfoModel> {
-        val result = dao.getBinDataList()
-        Log.d(TAG, "LOCAL SOURCE : $result ")
-        return result.mapNotNull { it.toBinInfoModel() }
+    override suspend fun getListBinCodeInfo(): Flow<List<BinInfoModel>> {
+        return dao.getBinDataList().mapNotNull { list -> list.mapNotNull { it.toBinInfoModel() } }
     }
 
     override suspend fun saveResultBinCodeInfo(binCodeModel: BinInfoModel) {

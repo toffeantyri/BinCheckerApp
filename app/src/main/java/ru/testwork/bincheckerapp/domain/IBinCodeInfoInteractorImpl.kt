@@ -1,6 +1,7 @@
 package ru.testwork.bincheckerapp.domain
 
 import android.util.Log
+import kotlinx.coroutines.flow.Flow
 import ru.testwork.bincheckerapp.TAG
 import ru.testwork.bincheckerapp.data.models.remote.BinInfoModel
 import ru.testwork.bincheckerapp.data.repositories.BinCodeHistoryRepository
@@ -20,7 +21,7 @@ class IBinCodeInfoInteractorImpl @Inject constructor(
         return result
     }
 
-    override suspend fun getHistoryListInfo(): List<BinInfoModel> {
+    override suspend fun getHistoryListInfo(): Flow<List<BinInfoModel>> {
         val result = binCodeHistoryRepo.getBinCodeListHistory()
         Log.d(TAG, "Interactor: $result")
         return result

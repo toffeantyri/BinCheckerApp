@@ -22,8 +22,12 @@ class HistoryBinInfoViewModel @Inject constructor(
 
 
     init {
-        Log.d(TAG, "VM INIT")
-        loadBinInfoListHistory()
+        viewModelScope.launch {
+            binCodeInfoInteractor.getHistoryListInfo().collect {
+                Log.d(TAG, "VM INIT $it")
+                listData.value = it
+            }
+        }
     }
 
     fun loadBinInfoListHistory() {
@@ -32,7 +36,7 @@ class HistoryBinInfoViewModel @Inject constructor(
                 binCodeInfoInteractor.getHistoryListInfo()
             }.onSuccess {
                 Log.d(TAG, "VM SUCCESS")
-                listData.emit(it)
+                //listData.emit(it)
             }.onFailure {
                 Log.d(TAG, "VM ERROR : $it")
             }
