@@ -62,6 +62,7 @@ class HomeViewModel @Inject constructor(private val binCodeInteractor: IBinCodeI
                     toastMessageState.value = it.message
                 }
             } else {
+                toastMessageState.value = "Введите минимум 6 цифр"
                 binCodeIsValid.tryEmit(false)
             }
         }
