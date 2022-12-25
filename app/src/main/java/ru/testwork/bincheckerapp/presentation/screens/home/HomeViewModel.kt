@@ -41,6 +41,7 @@ class HomeViewModel @Inject constructor(private val binCodeInteractor: IBinCodeI
 
     fun changeInputBinCode(text: String) {
         inputBinCode.tryEmit(text)
+        binDtoFlow.value = null
     }
 
     fun getBinCodeInfo() {
