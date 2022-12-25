@@ -2,10 +2,10 @@ package ru.testwork.bincheckerapp.domain
 
 import android.util.Log
 import kotlinx.coroutines.flow.Flow
-import ru.testwork.bincheckerapp.TAG
 import ru.testwork.bincheckerapp.data.models.remote.BinInfoModel
 import ru.testwork.bincheckerapp.data.repositories.BinCodeHistoryRepository
 import ru.testwork.bincheckerapp.data.repositories.BinCodeInfoRepository
+import ru.testwork.bincheckerapp.presentation.TAG
 import javax.inject.Inject
 
 class IBinCodeInfoInteractorImpl @Inject constructor(

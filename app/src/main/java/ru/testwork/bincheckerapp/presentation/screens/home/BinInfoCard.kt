@@ -1,8 +1,13 @@
 package ru.testwork.bincheckerapp.presentation.screens.home
 
-import androidx.compose.animation.AnimatedVisibility
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -10,8 +15,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -22,11 +32,16 @@ import ru.testwork.bincheckerapp.data.models.remote.Bank
 import ru.testwork.bincheckerapp.data.models.remote.BinInfoModel
 import ru.testwork.bincheckerapp.data.models.remote.Country
 import ru.testwork.bincheckerapp.data.models.remote.Number
+import ru.testwork.bincheckerapp.presentation.theme.DarkGreen
 import ru.testwork.bincheckerapp.presentation.theme.LightLightBlue
+import ru.testwork.bincheckerapp.presentation.utils.showToast
+import java.util.*
 
 @Composable
 fun BinInfoCard(data: BinInfoModel?) {
 
+
+    val context = LocalContext.current as Activity
 
     val titleNoInfo = stringResource(
         id = R.string.info_title_with_number_error
@@ -42,6 +57,8 @@ fun BinInfoCard(data: BinInfoModel?) {
             if (data != null) titleInfoIsExist else titleNoInfo
         )
     }
+
+    val errorOpenAnyAppText = stringResource(id = R.string.intent_no_application_exist)
 
     Card(
         modifier = Modifier
@@ -78,6 +95,7 @@ fun BinInfoCard(data: BinInfoModel?) {
                     fontWeight = FontWeight.Normal,
                     textAlign = TextAlign.Center
                 )
+
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = data?.bank?.bankName ?: "?",
@@ -87,10 +105,24 @@ fun BinInfoCard(data: BinInfoModel?) {
                     textAlign = TextAlign.Center
                 )
 
-                AnimatedVisibility(visible = data?.bank?.url != null) {
+                if (data?.bank?.url != null) {
+
+                    val browserIntent = Intent(
+                        Intent.ACTION_VIEW, Uri.parse("https://${data.bank.url}")
+                    )
+
                     Text(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = (data?.bank?.url ?: "?"),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(4.dp)
+                            .clickable {
+                                try {
+                                    context.startActivity(browserIntent)
+                                } catch (e: Exception) {
+                                    context.showToast(errorOpenAnyAppText)
+                                }
+                            },
+                        text = data.bank.url,
                         fontSize = 16.sp,
                         color = Color.Blue,
                         fontWeight = FontWeight.SemiBold,
@@ -98,20 +130,33 @@ fun BinInfoCard(data: BinInfoModel?) {
                     )
                 }
 
-                AnimatedVisibility(visible = data?.bank?.phone != null) {
+                if (data?.bank?.phone != null) {
+
+                    val intent = Intent(Intent.ACTION_DIAL)
+                    intent.data = Uri.parse("tel:${data.bank.phone}")
+
                     Text(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = data?.bank?.phone ?: "?",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(4.dp)
+                            .clickable {
+                                try {
+                                    context.startActivity(intent)
+                                } catch (e: Exception) {
+                                    context.showToast(errorOpenAnyAppText)
+                                }
+                            },
+                        text = data.bank.phone,
                         fontSize = 16.sp,
-                        color = Color.Black,
+                        color = DarkGreen,
                         fontWeight = FontWeight.SemiBold,
                         textAlign = TextAlign.Center
                     )
                 }
-                AnimatedVisibility(visible = data?.bank?.city != null) {
+                if (data?.bank?.city != null) {
                     Text(
                         modifier = Modifier.fillMaxWidth(),
-                        text = data?.bank?.city ?: "?",
+                        text = data.bank.city,
                         fontSize = 16.sp,
                         color = Color.Black,
                         fontWeight = FontWeight.SemiBold,
@@ -204,24 +249,62 @@ fun BinInfoCard(data: BinInfoModel?) {
                 textAlign = TextAlign.Center
             )
 
-            Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = data?.country?.name ?: "?",
-                fontSize = 20.sp,
-                color = Color.Black,
-                fontWeight = FontWeight.SemiBold,
-                textAlign = TextAlign.Center
-            )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    modifier = Modifier.wrapContentWidth(),
+                    text = data?.country?.name ?: "?",
+                    fontSize = 20.sp,
+                    color = Color.Black,
+                    fontWeight = FontWeight.SemiBold,
+                    textAlign = TextAlign.Center
+                )
 
+                if ((data?.country?.latitude != null) && (data.country.longitude != null)) {
+                    val uri =
+                        String.format(
+                            Locale.ENGLISH,
+                            "geo:%f,%f",
+                            data.country.latitude.toFloat(),
+                            data.country.longitude.toFloat()
+                        )
+                    val mapIntent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
+
+                    IconButton(
+                        modifier = Modifier
+                            .size(30.dp, 30.dp)
+                            .wrapContentWidth(),
+                        onClick = {
+                            try {
+                                context.startActivity(mapIntent)
+                            } catch (e: Exception) {
+                                context.showToast(errorOpenAnyAppText)
+                            }
+                        }) {
+                        Icon(
+                            tint = colorResource(id = R.color.red),
+                            modifier = Modifier.shadow(elevation = 8.dp),
+                            imageVector = ImageVector.vectorResource(id = R.drawable.ic_baseline_fmd_good_24),
+                            contentDescription = null
+                        )
+
+                    }
+                }
+
+            }
             SimpleRowRow(
                 leftTitle = stringResource(id = R.string.latitude),
-                leftValue = if (data?.country?.latitude != null) {
-                    data.country.latitude.toString()
-                } else "?",
+                latitude = if (data?.country?.latitude != null) {
+                    data.country.latitude
+                } else 0,
                 rightTitle = stringResource(id = R.string.longitude),
-                rightValue = if (data?.country?.longitude != null) {
-                    data.country.longitude.toString()
-                } else "?",
+                longitude = if (data?.country?.longitude != null) {
+                    data.country.longitude
+                } else 0,
             )
 
         }
@@ -256,9 +339,9 @@ fun SimpleColumn(modifier: Modifier = Modifier, title: String, value: String?) {
 fun SimpleRowRow(
     modifier: Modifier = Modifier,
     leftTitle: String,
-    leftValue: String,
+    latitude: Int,
     rightTitle: String,
-    rightValue: String
+    longitude: Int
 ) {
 
     Row(
@@ -278,7 +361,7 @@ fun SimpleRowRow(
             )
 
             Text(
-                text = leftValue,
+                text = if (latitude == 0) "?" else latitude.toString(),
                 fontSize = 14.sp,
                 color = Color.Black,
                 fontWeight = FontWeight.SemiBold,
@@ -295,7 +378,7 @@ fun SimpleRowRow(
             )
 
             Text(
-                text = rightValue,
+                text = if (longitude == 0) "?" else longitude.toString(),
                 fontSize = 14.sp,
                 color = Color.Black,
                 fontWeight = FontWeight.SemiBold,

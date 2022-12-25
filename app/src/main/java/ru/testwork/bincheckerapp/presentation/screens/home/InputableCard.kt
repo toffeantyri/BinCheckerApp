@@ -127,7 +127,7 @@ fun InputableCard(
                 OutlinedTextField(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1f)
+                        .weight(0.5f)
                         .padding(horizontal = 4.dp),
                     value = inputText,
                     readOnly = isLoading,
@@ -159,19 +159,7 @@ fun InputableCard(
                         .fillMaxWidth()
                         .weight(0.5f)
                         .padding(horizontal = 4.dp),
-                    value = "XXXX",
-                    onValueChange = {},
-                    readOnly = true,
-                    maxLines = 1,
-                    singleLine = true
-                )
-
-                OutlinedTextField(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(0.5f)
-                        .padding(horizontal = 4.dp),
-                    value = "XXXX",
+                    value = "XXXX-XXXX",
                     onValueChange = {},
                     readOnly = true,
                     maxLines = 1,
@@ -211,6 +199,7 @@ fun InputableCard(
         }
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable

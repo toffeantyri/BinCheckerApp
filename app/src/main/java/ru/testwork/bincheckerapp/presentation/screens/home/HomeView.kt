@@ -6,13 +6,18 @@ import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.ScrollState
+import androidx.compose.animation.core.MutableTransitionState
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,15 +29,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import kotlinx.coroutines.launch
 import ru.testwork.bincheckerapp.R
 import ru.testwork.bincheckerapp.presentation.utils.OnBackPressedCallBackCompose
 import ru.testwork.bincheckerapp.presentation.utils.showToast
 
 @OptIn(ExperimentalComposeUiApi::class)
-@SuppressLint("FlowOperatorInvokedInComposition")
+@SuppressLint("FlowOperatorInvokedInComposition", "CoroutineCreationDuringComposition")
 @Composable
 fun HomeView(viewModel: HomeViewModel = hiltViewModel()) {
 
+    val job = rememberCoroutineScope()
     val context = LocalContext.current as Activity
     val keyboardController = LocalSoftwareKeyboardController.current
 
@@ -80,11 +87,14 @@ fun HomeView(viewModel: HomeViewModel = hiltViewModel()) {
         handler?.postDelayed({ backPressDoubleClick.value = false }, 2000)
     }
 
+    val scrollState = rememberScrollState(0)
+
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = 16.dp)
-            .verticalScroll(enabled = true, state = ScrollState(0))
+            .verticalScroll(enabled = true, state = scrollState)
     ) {
 
         Text(
@@ -130,8 +140,31 @@ fun HomeView(viewModel: HomeViewModel = hiltViewModel()) {
                 maxLines = 1
             )
         }
+        AnimatedVisibility(visible = isLoading) {
+            Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                CircularProgressIndicator()
+            }
+        }
 
-        AnimatedVisibility(visible = binData != null) {
+        val visState = MutableTransitionState(initialState = false).apply {
+            targetState = binData != null
+        }
+        animateFloatAsState(
+            targetValue = if (binData != null) 1f else 0f,
+            animationSpec = tween(500),
+            finishedListener = {
+                if (it == 1f) {
+                    job.launch {
+                        scrollState.animateScrollTo(
+                            scrollState.maxValue,
+                            animationSpec = tween(800)
+                        )
+                    }
+                }
+            }
+        )
+
+        AnimatedVisibility(visibleState = visState) {
             BinInfoCard(data = binData)
         }
 

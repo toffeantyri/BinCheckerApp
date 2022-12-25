@@ -1,4 +1,4 @@
-package ru.testwork.bincheckerapp
+package ru.testwork.bincheckerapp.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
